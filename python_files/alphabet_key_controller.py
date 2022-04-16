@@ -4,10 +4,12 @@ isFinished = False
 device_name = '/dev/ttyACM0' #arduino device name for Linux-based OS
 baud_rate = 9600 #Note: this must equal Arduino baud rate, otherwise signal is not recieved!
 serialConn = Serial(device_name, baud_rate, timeout=.1)
+serialConn.reset_input_buffer()
 def send_serialMsg(msg):
 	global serialConn
 	print("Sending: " + msg)
 	serialConn.write(bytes(msg,'utf-8'))
+def recieve_serialMsg():
 	try:
 		#try normal way of recieving data
 		line = serialConn.readline().decode('utf-8').rstrip()
@@ -21,12 +23,13 @@ def onpress(key):
 		if key.char.isalpha():
 			print("alphabetical character pressed")
 			send_serialMsg(key.char)
+			recieve_serialMsg()
 			return False # Stop listener
 	if key == Key.esc:
 	# Stop listener
 		isFinished = True
 		return False
-def onrelease(key):
+def onrelease(key): #we need this to ensure keypresses are not sent when holding down a key
 	global isFinished
 	if isinstance(key, KeyCode): #lets us know if we can safely use key.char
 		if key.char.isalpha():

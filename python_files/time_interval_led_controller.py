@@ -1,6 +1,7 @@
 from serial import Serial
 from time import sleep
-device_name = '/dev/ttyACM0' #arduino device name for Linux-based OS
+#device_name = '/dev/ttyACM0' #USB arduino device name for Linux-based OS
+device_name = '/dev/ttyS0' #UART Device name for Arduino for Linux-based
 baud_rate = 9600 #Note: this must equal Arduino baud rate, otherwise signal is not recieved!
 delay = 0.5
 serialConn = Serial(device_name, baud_rate, timeout=.1)
